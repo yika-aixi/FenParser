@@ -225,6 +225,18 @@ namespace FenParser.Models
             FullMoveNumber = int.Parse(fullmoveNumberString);
         }
 
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < _row; i++)
+            {
+                string[] currentRank = Ranks[i];
+                sb.AppendLine(_getColStr(currentRank));
+                sb.AppendLine("-----------------");
+            }
+            return sb.ToString();
+        }
+
         /// <summary>
         /// Prints a graphical representation of the board state to the console.
         /// </summary>
@@ -232,15 +244,7 @@ namespace FenParser.Models
         {
             Console.WriteLine("-----------------");
 
-            for (int i = 0; i < _row; i++)
-            {
-                string[] currentRank = Ranks[i];
-                Console.WriteLine(_getColStr(currentRank));
-//                Console.WriteLine(
-//                      "|" + currentRank[0] + "|" + currentRank[1] + "|" + currentRank[2] + "|" + currentRank[3]
-//                    + "|" + currentRank[4] + "|" + currentRank[5] + "|" + currentRank[6] + "|" + currentRank[7] + "|");
-                Console.WriteLine("-----------------");
-            }
+            Console.WriteLine(this.ToString());
 
             Console.WriteLine();
             Console.WriteLine("The active player is " + this.ActivePlayerColor + ".");

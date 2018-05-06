@@ -19,7 +19,7 @@ namespace FenParser.Tests
             bool allRanksAreNotNull = true;
 
             string[][] ranks = Parser.BoardStateData.Ranks;
-
+            Console.WriteLine(Parser.BoardStateData.ToString());
             for (int i = 0; i < ranks.Length; i++)
             {
                 for (int j = 0; j < ranks[i].Length; j++)
@@ -41,6 +41,7 @@ namespace FenParser.Tests
             bool allRanksAreNotNull = true;
 
             string[][] ranks = ChinaParser.BoardStateData.Ranks;
+            Console.WriteLine(ChinaParser.BoardStateData.ToString());
             for (int i = 0; i < ranks.Length; i++)
             {
                 for (int j = 0; j < ranks[i].Length; j++)
