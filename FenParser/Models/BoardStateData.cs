@@ -26,7 +26,7 @@ namespace FenParser.Models
         /// <summary>
         /// A list of ranks (reversed; from rank #8 to rank #1)
         /// </summary>
-        public string[][] Ranks = new string[8][];
+        public string[][] Ranks;//= new string[8][];
 
         /// <summary>
         /// White's kingside castling availability.
@@ -78,7 +78,7 @@ namespace FenParser.Models
             for (int i = 0; i < piecePlacementRanksArray.Length; i++)
             {
                 string[] allRanks = Array.ConvertAll(piecePlacementRanksArray[i].ToCharArray(), x => x.ToString());
-                string[] newRank = new string[8];
+                string[] newRank = new string[_col];
 
                 for (int j = 0; j < allRanks.Length; j++)
                 {
@@ -232,13 +232,13 @@ namespace FenParser.Models
         {
             Console.WriteLine("-----------------");
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < _row; i++)
             {
                 string[] currentRank = Ranks[i];
-
-                Console.WriteLine(
-                      "|" + currentRank[0] + "|" + currentRank[1] + "|" + currentRank[2] + "|" + currentRank[3]
-                    + "|" + currentRank[4] + "|" + currentRank[5] + "|" + currentRank[6] + "|" + currentRank[7] + "|");
+                Console.WriteLine(_getColStr(currentRank));
+//                Console.WriteLine(
+//                      "|" + currentRank[0] + "|" + currentRank[1] + "|" + currentRank[2] + "|" + currentRank[3]
+//                    + "|" + currentRank[4] + "|" + currentRank[5] + "|" + currentRank[6] + "|" + currentRank[7] + "|");
                 Console.WriteLine("-----------------");
             }
 
@@ -290,8 +290,8 @@ namespace FenParser.Models
                 Console.WriteLine(this.EnPassantSquare + " is eligible for en-passant capture.");
             }
 
-            if (this.HalfMoveCounter != null)
-            {
+//            if (this.HalfMoveCounter != null)
+//            {
                 if (this.HalfMoveCounter == 1)
                 {
                     Console.WriteLine("There has been 1 halfmove since the last pawn advance or capture.");
@@ -304,10 +304,10 @@ namespace FenParser.Models
                 {
                     Console.WriteLine("There have been " + this.HalfMoveCounter + " moves since the last pawn advance or capture.");
                 }
-            }
+//            }
 
-            if (this.FullMoveNumber != null)
-            {
+//            if (this.FullMoveNumber != null)
+//            {
                 if (this.FullMoveNumber == 1)
                 {
                     Console.WriteLine("This is the first move.");
@@ -316,25 +316,50 @@ namespace FenParser.Models
                 {
                     Console.WriteLine("This is move number " + this.FullMoveNumber + ".");
                 }
-            }
+//            }
 
             Console.ReadKey();
         }
 
+        string _getColStr(string[] cols)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var col in cols)
+            {
+                sb.Append("|");
+                sb.Append(col);
+            }
+            sb.Append("|");
+            return sb.ToString();
+        }
         #endregion
 
         #region Construtors
         public BoardStateData() { }
 
-        public BoardStateData(string piecePlacementString, string activeColorString, string castlingAvailabilityString,
-                string enPassantSquareString, string halfmoveClockString, string fullmoveNumberString)
+        private readonly int _row;
+        private readonly int _col;
+
+        public BoardStateData(int row, int col, string piecePlacementString, string activeColorString,
+            string castlingAvailabilityString,
+            string enPassantSquareString, string halfmoveClockString, string fullmoveNumberString)
+            
         {
+            _row = row;
+            _col = col;
+            Ranks = new string[_row][];
             ParseRanks(piecePlacementString);
             ParseActiveColor(activeColorString);
             ParseCastlingAvailability(castlingAvailabilityString);
             ParseEnPassantSquare(enPassantSquareString);
             ParseHalfMoveCounter(halfmoveClockString);
             ParseFullmoveNumber(fullmoveNumberString);
+        }
+
+        public BoardStateData(string piecePlacementString, string activeColorString, string castlingAvailabilityString,
+                string enPassantSquareString, string halfmoveClockString, string fullmoveNumberString) : this(8,8,piecePlacementString, activeColorString, castlingAvailabilityString,
+                enPassantSquareString, halfmoveClockString, fullmoveNumberString)
+        {
         }
 
         #endregion
